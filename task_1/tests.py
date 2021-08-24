@@ -1,9 +1,11 @@
+import os
 import pytest
 
 from multiplexer import multiplex_files
 
 
-def write_file(filename, content):
+def write_file(tmp_path, filename, content):
+    filename = os.path.join(tmp_path, filename)
     with open(filename, 'w') as file:
         for line in content:
             file.write(line + '\n')
@@ -11,45 +13,45 @@ def write_file(filename, content):
 
 
 @pytest.fixture
-def file_with_numbers():
+def file_with_numbers(tmp_path):
     filename = 'file_with_numbers'
     content = ['1', '2', '3']
-    return write_file(filename, content)
+    return write_file(tmp_path, filename, content)
 
 
 @pytest.fixture
-def file_with_letters():
+def file_with_letters(tmp_path):
     filename = 'file_with_letters'
     content = ['A', 'B', 'C', 'D']
-    return write_file(filename, content)
+    return write_file(tmp_path, filename, content)
 
 
 @pytest.fixture
-def file_with_symbols():
+def file_with_symbols(tmp_path):
     filename = 'file_with_symbols'
     content = ['-', '+']
-    return write_file(filename, content)
+    return write_file(tmp_path, filename, content)
 
 
 @pytest.fixture
-def file_with_one_line():
+def file_with_one_line(tmp_path):
     filename = 'file_with_one_line'
     content = ['line', ]
-    return write_file(filename, content)
+    return write_file(tmp_path, filename, content)
 
 
 @pytest.fixture
-def empty_file():
+def empty_file(tmp_path):
     filename = 'empty_file'
     content = ['', ]
-    return write_file(filename, content)
+    return write_file(tmp_path, filename, content)
 
 
 @pytest.fixture
-def file_with_empty_lines():
+def file_with_empty_lines(tmp_path):
     filename = 'file_with_empty_lines'
     content = ['', 'line1', '', 'line2']
-    return write_file(filename, content)
+    return write_file(tmp_path, filename, content)
 
 
 def test_one_file(file_with_letters):
