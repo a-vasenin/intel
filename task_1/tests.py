@@ -1,7 +1,7 @@
 import pytest
 import mock
 
-from multiplexer_return import multiplex_files
+from multiplexer import multiplex_files
 
 
 def write_file(filename, content):
