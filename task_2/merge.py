@@ -47,7 +47,7 @@ def merge(*args):
         if number_of_exhausted_generators == number_of_iterators:
             break
     # After all generators are exhausted, we should return the last (also the greater) element
-    yield curr_value
+    yield prev_value
 
 
 if __name__ == '__main__':
