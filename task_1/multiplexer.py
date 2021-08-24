@@ -2,7 +2,14 @@ from contextlib import ExitStack
 
 
 def get_file_end_position(file_object):
-    """Return end file position."""
+    """
+    Return end file position.
+    How it works:
+    We remember the current position in file. We will return to it afterwards.
+    We get to the end of the file and remember this position too.
+    We return to original position in file, as nothing has happened :)
+    The function returns remembered end position of the file.
+    """
     current_position = file_object.tell()
 
     file_object.seek(0, 2)
@@ -23,7 +30,7 @@ def generate_line(file_object):
 
 
 def return_lines(files: list):
-    """Return next line for each file in the 'files' list."""
+    """Yield next line for each file in the 'files' list."""
     for file_object in files:
         generated_line = generate_line(file_object)
         
@@ -32,11 +39,11 @@ def return_lines(files: list):
 
 def multiplex_files(filenames: list, infinite=True, loops=5):
     """
-    param filenames: list with filenames.
-    param infinite: if True, invokes infinite loop.
-    param loops: if infinite=False, invokes as much loops as passed in parameter.
+    :param filenames: list with filenames.
+    :param infinite: if True, invokes infinite loop.
+    :param loops: if infinite=False, invokes as much loops as passed in parameter.
 
-    Open files from the list 'filenames' in context manager. Multiplex lines from those files one-by-one.
+    Open files from the list 'filenames' in context manager. Multiplex lines from these files one-by-one.
     """
     with ExitStack() as stack:
         files = [stack.enter_context(open(filename)) for filename in filenames]
@@ -51,6 +58,6 @@ def multiplex_files(filenames: list, infinite=True, loops=5):
 
 if __name__ == '__main__':
     filenames = ['file_1', 'file_2', 'file_3']
-    list = [[k for k in i] for i in multiplex_files(filenames, infinite=False)]
+    multiplexed_lines = [[k for k in i] for i in multiplex_files(filenames, infinite=False)]
     
-    print(list)
+    print(multiplexed_lines)
