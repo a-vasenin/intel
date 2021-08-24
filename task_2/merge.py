@@ -46,7 +46,7 @@ def merge(*args):
         # Well, its one of the ways to determine when all generators are exhausted
         if number_of_exhausted_generators == number_of_iterators:
             break
-    # After all generators are exhausted, we should return the last (also the greater) element
+    # After all generators are exhausted, we shouldn't forget to yield the last (also the greater) element
     yield prev_value
 
 
