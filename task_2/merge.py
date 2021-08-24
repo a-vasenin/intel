@@ -1,5 +1,5 @@
 def merge_sorted(*args):
-    """Haha, that's not what you want, possibly :)"""
+    """Haha, that's probably not what you want :)"""
     merged_list = []
     for arg in args:
         arg = [i for i in arg]
