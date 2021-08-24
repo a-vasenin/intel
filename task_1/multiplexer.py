@@ -3,12 +3,13 @@ from contextlib import ExitStack
 
 def get_file_end_position(file_object):
     """
-    Return end file position.
+    Returns end file position.
     How it works:
-    We remember the current position in file. We will return to it afterwards.
-    We get to the end of the file and remember this position too.
-    We return to original position in file, as nothing has happened :)
-    The function returns remembered end position of the file.
+    Well, I dont know how to get the length of the file while I dont read it all in memory,
+    so here is some again invented wheels :)
+    We remember the current position in file. We will return to it after we done here.
+    We then get to the end of the file and remember this position too. This position will be used as file end position.
+    Then we return to original remembered position in file, as nothing has happened :)
     """
     current_position = file_object.tell()
 
