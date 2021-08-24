@@ -1,5 +1,4 @@
 import pytest
-import mock
 
 from multiplexer import multiplex_files
 
@@ -35,7 +34,7 @@ def file_with_symbols():
 @pytest.fixture
 def file_with_one_line():
     filename = 'file_with_one_line'
-    content = ['line',]
+    content = ['line', ]
     return write_file(filename, content)
 
 
@@ -48,7 +47,9 @@ def empty_file():
 
 @pytest.fixture
 def file_with_empty_lines():
-    pass
+    filename = 'file_with_empty_lines'
+    content = ['', 'line1', '', 'line2']
+    return write_file(filename, content)
 
 
 def test_one_file(file_with_letters):
@@ -72,8 +73,11 @@ def test_file_with_one_line(file_with_one_line):
     assert extracted_values == [['line'], ['line'], ['line'], ['line'], ['line']]
 
 
-def test_file_with_empty_lines():
-    pass
+def test_file_with_empty_lines(file_with_empty_lines):
+    filenames = [file_with_empty_lines, ]
+    generator = multiplex_files(filenames, infinite=False, loops=5)
+    extracted_values = [[i for i in j] for j in generator]
+    assert extracted_values == [[''], ['line1'], [''], ['line2'], ['']]
 
 
 def test_empty_file(empty_file):
@@ -83,9 +87,17 @@ def test_empty_file(empty_file):
     assert extracted_values == [[''], [''], [''], [''], ['']]
 
 
-def test_loops_number():
-    pass
+def test_loops_number(file_with_one_line):
+    filenames = [file_with_one_line, ]
+    generator = multiplex_files(filenames, infinite=False, loops=10)
+    extracted_values = [[i for i in j] for j in generator]
+    assert extracted_values == [['line']] * 10
 
 
 def test_no_file():
-    pass
+    try:
+        filenames = ['file_not_exists', ]
+        generator = multiplex_files(filenames, infinite=False, loops=10)
+        extracted_values = [[i for i in j] for j in generator]
+    except FileNotFoundError:
+        pass
